@@ -949,7 +949,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://127.0.0.1:8000/api/v1/suppliers?page=1&amp;per_page=10" \
+    --get "http://127.0.0.1:8000/api/v1/suppliers?page=1" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -961,7 +961,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 const params = {
     "page": "1",
-    "per_page": "10",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -991,13 +990,12 @@ fetch(url, {
         {
             &quot;id&quot;: 1,
             &quot;name&quot;: &quot;PT Graha Kalasta&quot;,
-            &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;,
-            &quot;updated_at&quot;: &quot;2024-01-01 00:00:00&quot;
+            &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
         }
     ],
     &quot;meta&quot;: {
         &quot;total&quot;: 1,
-        &quot;per_page&quot;: 10,
+        &quot;per_page&quot;: 15,
         &quot;current_page&quot;: 1,
         &quot;last_page&quot;: 1
     }
@@ -1088,18 +1086,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Nomor halaman. Example: <code>1</code></p>
             </div>
-                                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
-<i>optional</i> &nbsp;
- &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="per_page"                data-endpoint="GETapi-v1-suppliers"
-               value="10"
-               data-component="query">
-    <br>
-<p>Jumlah data per halaman. Example: <code>10</code></p>
-            </div>
                 </form>
 
                     <h2 id="supplier-management-POSTapi-v1-suppliers">Tambah supplier baru</h2>
@@ -1107,7 +1093,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Membuat data supplier baru ke database.</p>
+
 
 <span id="example-requests-POSTapi-v1-suppliers">
 <blockquote>Example request:</blockquote>
@@ -1158,8 +1144,7 @@ fetch(url, {
     &quot;data&quot;: {
         &quot;id&quot;: 1,
         &quot;name&quot;: &quot;PT Graha Kalasta&quot;,
-        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;,
-        &quot;updated_at&quot;: &quot;2024-01-01 00:00:00&quot;
+        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
     }
 }</code>
  </pre>
@@ -1255,7 +1240,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Mengambil detail satu supplier berdasarkan ID.</p>
+
 
 <span id="example-requests-GETapi-v1-suppliers--id-">
 <blockquote>Example request:</blockquote>
@@ -1295,10 +1280,8 @@ fetch(url, {
 <code class="language-json" style="max-height: 300px;">{
     &quot;success&quot;: true,
     &quot;data&quot;: {
-        &quot;id&quot;: 1,
-        &quot;name&quot;: &quot;PT Maju Jaya&quot;,
-        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;,
-        &quot;updated_at&quot;: &quot;2024-01-01 00:00:00&quot;
+        &quot;name&quot;: &quot;PT Graha Kalasta&quot;,
+        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
     }
 }</code>
  </pre>
@@ -1403,7 +1386,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Mengubah data supplier yang sudah ada.</p>
+
 
 <span id="example-requests-PUTapi-v1-suppliers--id-">
 <blockquote>Example request:</blockquote>
@@ -1453,10 +1436,18 @@ fetch(url, {
     &quot;message&quot;: &quot;Supplier updated successfully.&quot;,
     &quot;data&quot;: {
         &quot;id&quot;: 1,
-        &quot;name&quot;: &quot;PT Graha Kalasta&quot;,
-        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;,
-        &quot;updated_at&quot;: &quot;2024-01-01 00:00:00&quot;
+        &quot;name&quot;: &quot;PT Sejahtera&quot;,
+        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [Supplier].&quot;
 }</code>
  </pre>
     </span>
@@ -1548,18 +1539,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>The ID of the supplier. Example: <code>1</code></p>
             </div>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>supplier</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
- &nbsp;
- &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="supplier"                data-endpoint="PUTapi-v1-suppliers--id-"
-               value="1"
-               data-component="url">
-    <br>
-<p>ID supplier. Example: <code>1</code></p>
-            </div>
                             <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
@@ -1580,7 +1559,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Menghapus data supplier dari database.</p>
+
 
 <span id="example-requests-DELETEapi-v1-suppliers--id-">
 <blockquote>Example request:</blockquote>

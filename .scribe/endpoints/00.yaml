@@ -37,20 +37,8 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Jumlah data per halaman.'
-        required: false
-        example: 10
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
     cleanQueryParameters:
       page: 1
-      per_page: 10
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -61,20 +49,8 @@ endpoints:
         content: |-
           {
             "success": true,
-            "data": [
-              {
-                "id": 1,
-                "name": "PT Graha Kalasta",
-               "created_at": "2024-01-01 00:00:00",
-               "updated_at": "2024-01-01 00:00:00"
-              }
-            ],
-            "meta": {
-              "total": 1,
-              "per_page": 10,
-              "current_page": 1,
-              "last_page": 1
-            }
+            "data": [{"id": 1, "name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}],
+            "meta": {"total": 1, "per_page": 15, "current_page": 1, "last_page": 1}
           }
         headers: []
         description: ''
@@ -97,7 +73,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Tambah supplier baru'
-      description: 'Membuat data supplier baru ke database.'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -130,12 +106,7 @@ endpoints:
           {
             "success": true,
             "message": "Supplier created successfully.",
-            "data": {
-              "id": 1,
-              "name": "PT Graha Kalasta",
-              "created_at": "2024-01-01 00:00:00",
-             "updated_at": "2024-01-01 00:00:00"
-            }
+            "data": {"id": 1, "name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}
           }
         headers: []
         description: ''
@@ -158,7 +129,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Detail supplier'
-      description: 'Mengambil detail satu supplier berdasarkan ID.'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -190,22 +161,14 @@ endpoints:
         content: |-
           {
             "success": true,
-            "data": {
-              "id": 1,
-              "name": "PT Maju Jaya",
-              "created_at": "2024-01-01 00:00:00",
-              "updated_at": "2024-01-01 00:00:00"
-            }
+            "data": {"name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}
           }
         headers: []
         description: ''
       -
         custom: []
         status: 404
-        content: |-
-          {
-            "message": "No query results for model [Supplier]."
-          }
+        content: '{"message": "No query results for model [Supplier]."}'
         headers: []
         description: ''
     responseFields: []
@@ -228,7 +191,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Update supplier'
-      description: 'Mengubah data supplier yang sudah ada.'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -246,20 +209,8 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      supplier:
-        custom: []
-        name: supplier
-        description: 'ID supplier.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
     cleanUrlParameters:
       id: 1
-      supplier: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -285,13 +236,14 @@ endpoints:
           {
             "success": true,
             "message": "Supplier updated successfully.",
-            "data": {
-              "id": 1,
-              "name": "PT Graha Kalasta",
-              "created_at": "2024-01-01 00:00:00",
-              "updated_at": "2024-01-01 00:00:00"
-            }
+            "data": {"id": 1, "name": "PT Sejahtera", "created_at": "2024-01-01 00:00:00"}
           }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [Supplier]."}'
         headers: []
         description: ''
     responseFields: []
@@ -313,7 +265,7 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Hapus supplier'
-      description: 'Menghapus data supplier dari database.'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -342,20 +294,13 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "success": true,
-            "message": "Supplier deleted successfully."
-          }
+        content: '{"success": true, "message": "Supplier deleted successfully."}'
         headers: []
         description: ''
       -
         custom: []
         status: 404
-        content: |-
-          {
-            "message": "No query results for model [Supplier]."
-          }
+        content: '{"message": "No query results for model [Supplier]."}'
         headers: []
         description: ''
     responseFields: []
