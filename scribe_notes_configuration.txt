@@ -1,0 +1,6 @@
+## Install Scribe =
+composer require knuckleswtf/scribe --dev
+
+## Publish Config on Laravel
+php artisan vendor:publish --tag=scribe-config
+
