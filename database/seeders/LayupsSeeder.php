@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
+use App\Models\Layup;
 use App\Models\Supplier;
-use App\Models\Layups;
+use Illuminate\Database\Seeder;
 
 class LayupsSeeder extends Seeder
 {
@@ -14,11 +14,11 @@ class LayupsSeeder extends Seeder
     public function run(): void
     {
         $suppierData = Supplier::first();
-        Layups::updateOrCreate(
+        Layup::updateOrCreate(
             ['id' => 1],
             [
                 'supplier_id' => $suppierData->id,
-                'name' => 'Sample Layup 1'
+                'name' => 'Sample Layup 1',
             ]
         );
     }

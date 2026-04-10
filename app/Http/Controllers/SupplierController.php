@@ -8,6 +8,11 @@ use App\Http\Resources\SupplierResources;
 use App\Models\Supplier;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * @group Supplier Management
+ *
+ * API endpoints untuk mengelola data supplier.
+ */
 class SupplierController extends Controller
 {
     /**
@@ -23,7 +28,7 @@ class SupplierController extends Controller
      *   "data": [
      *     {
      *       "id": 1,
-     *       "name": "PT Graha Kalasta"
+     *       "name": "PT Graha Kalasta",
      *      "created_at": "2024-01-01 00:00:00",
      *      "updated_at": "2024-01-01 00:00:00"
      *     }
@@ -93,7 +98,6 @@ class SupplierController extends Controller
      *     "name": "PT Maju Jaya",
      *     "created_at": "2024-01-01 00:00:00",
      *     "updated_at": "2024-01-01 00:00:00"
-     *   }
      *   }
      * }
      * @response 404 {

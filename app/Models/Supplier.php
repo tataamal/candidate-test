@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Supplier extends Model
 {
-    protected $table = "suppliers";
-    protected $fillable = ["name"];
+    protected $table = 'suppliers';
 
-    public function layups()
+    protected $fillable = ['name'];
+
+    public function layups(): HasMany
     {
-        return $this->hasMany(layups::class, "supplier_id");
+        return $this->hasMany(Layup::class, 'supplier_id');
     }
 }
