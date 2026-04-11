@@ -86,7 +86,6 @@ return [
     'external' => [
         'html_attributes' => [],
     ],
-
     'try_it_out' => [
         // Add a Try It Out button to your endpoints so consumers can test endpoints right from their browser.
         // Don't forget to enable CORS headers for your endpoints.
@@ -126,7 +125,7 @@ return [
         'placeholder' => '{YOUR_AUTH_KEY}',
 
         // Any extra authentication-related info for your users. Markdown and HTML are supported.
-        'extra_info' => 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.',
+        'extra_info' => '',
     ],
 
     // Example requests for each endpoint will be shown in each of these languages.

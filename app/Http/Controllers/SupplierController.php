@@ -23,8 +23,6 @@ class SupplierController extends Controller
     /**
      * List semua supplier
      *
-     * Mengambil daftar semua supplier dengan pagination.
-     *
      * @queryParam page int Nomor halaman. Example: 1
      *
      * @response 200 {
@@ -35,6 +33,8 @@ class SupplierController extends Controller
      */
     public function index(): JsonResponse
     {
+        $this->authorize('viewAny', Supplier::class);
+
         $suppliers = $this->service->getAll();
 
         return response()->json([
@@ -59,9 +59,12 @@ class SupplierController extends Controller
      *   "message": "Supplier created successfully.",
      *   "data": {"id": 1, "name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}
      * }
+     * @response 403 {"message": "This action is unauthorized."}
      */
     public function store(StoreSuppliersRequest $request): JsonResponse
     {
+        $this->authorize('create', Supplier::class);
+
         $supplier = $this->service->create($request->validated());
 
         return response()->json([
@@ -76,12 +79,14 @@ class SupplierController extends Controller
      *
      * @response 200 {
      *   "success": true,
-     *   "data": {"name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}
+     *   "data": {"id": 1, "name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}
      * }
      * @response 404 {"message": "No query results for model [Supplier]."}
      */
     public function show(Supplier $supplier): JsonResponse
     {
+        $this->authorize('view', $supplier);
+
         return response()->json([
             'success' => true,
             'data'    => new SupplierResources($supplier),
@@ -98,10 +103,13 @@ class SupplierController extends Controller
      *   "message": "Supplier updated successfully.",
      *   "data": {"id": 1, "name": "PT Sejahtera", "created_at": "2024-01-01 00:00:00"}
      * }
+     * @response 403 {"message": "This action is unauthorized."}
      * @response 404 {"message": "No query results for model [Supplier]."}
      */
     public function update(UpdateSuppliersRequest $request, Supplier $supplier): JsonResponse
     {
+        $this->authorize('update', $supplier);
+
         $supplier = $this->service->update($supplier, $request->validated());
 
         return response()->json([
@@ -115,10 +123,13 @@ class SupplierController extends Controller
      * Hapus supplier
      *
      * @response 200 {"success": true, "message": "Supplier deleted successfully."}
+     * @response 403 {"message": "This action is unauthorized."}
      * @response 404 {"message": "No query results for model [Supplier]."}
      */
     public function destroy(Supplier $supplier): JsonResponse
     {
+        $this->authorize('delete', $supplier);
+
         $this->service->delete($supplier);
 
         return response()->json([

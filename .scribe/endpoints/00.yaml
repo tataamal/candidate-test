@@ -1,23 +1,23 @@
-name: 'Supplier Management'
+name: Authentication
 description: |-
 
-  API endpoints untuk mengelola data supplier.
+  API endpoints untuk autentikasi user.
 endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/suppliers
+      - POST
+    uri: api/v1/register
     metadata:
       custom: []
-      groupName: 'Supplier Management'
+      groupName: Authentication
       groupDescription: |-
 
-        API endpoints untuk mengelola data supplier.
+        API endpoints untuk autentikasi user.
       subgroup: ''
       subgroupDescription: ''
-      title: 'List semua supplier'
-      description: 'Mengambil daftar semua supplier dengan pagination.'
+      title: 'Register user baru'
+      description: ''
       authenticated: false
       deprecated: false
     headers:
@@ -25,32 +25,80 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      page:
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
         custom: []
-        name: page
-        description: 'Nomor halaman.'
-        required: false
-        example: 1
-        type: integer
+        name: name
+        description: 'Nama user.'
+        required: true
+        example: 'John Doe'
+        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanQueryParameters:
-      page: 1
-    bodyParameters: []
-    cleanBodyParameters: []
+      email:
+        custom: []
+        name: email
+        description: Email.
+        required: true
+        example: john@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'Password min 8 karakter.'
+        required: true
+        example: password123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      role:
+        custom: []
+        name: role
+        description: 'Role user (admin/user/supplier).'
+        required: true
+        example: user
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password_confirmation:
+        custom: []
+        name: password_confirmation
+        description: 'Konfirmasi password.'
+        required: true
+        example: password123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'John Doe'
+      email: john@example.com
+      password: password123
+      role: user
+      password_confirmation: password123
     fileParameters: []
     responses:
       -
         custom: []
-        status: 200
+        status: 201
         content: |-
           {
             "success": true,
-            "data": [{"id": 1, "name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}],
-            "meta": {"total": 1, "per_page": 15, "current_page": 1, "last_page": 1}
+            "message": "User registered successfully.",
+            "user": {"id": 1, "name": "John Doe", "email": "john@example.com", "role": "user"}
           }
         headers: []
         description: ''
@@ -63,16 +111,16 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/suppliers
+    uri: api/v1/login
     metadata:
       custom: []
-      groupName: 'Supplier Management'
+      groupName: Authentication
       groupDescription: |-
 
-        API endpoints untuk mengelola data supplier.
+        API endpoints untuk autentikasi user.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Tambah supplier baru'
+      title: 'Login user'
       description: ''
       authenticated: false
       deprecated: false
@@ -84,29 +132,94 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
+      email:
         custom: []
-        name: name
-        description: 'Nama supplier.'
+        name: email
+        description: 'Email user.'
         required: true
-        example: 'PT Graha Kalasta'
+        example: john@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: Password.
+        required: true
+        example: password123
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: 'PT Graha Kalasta'
+      email: john@example.com
+      password: password123
     fileParameters: []
     responses:
       -
         custom: []
-        status: 201
+        status: 200
         content: |-
           {
             "success": true,
-            "message": "Supplier created successfully.",
-            "data": {"id": 1, "name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}
+            "message": "Login successful.",
+            "user": {"id": 1, "name": "John Doe", "email": "john@example.com", "role": "user"}
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "success": false,
+            "message": "Email atau password salah."
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/logout
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: |-
+
+        API endpoints untuk autentikasi user.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Logout user'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "message": "Logout successful."
           }
         headers: []
         description: ''
@@ -119,36 +232,24 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/suppliers/{id}'
+    uri: api/v1/me
     metadata:
       custom: []
-      groupName: 'Supplier Management'
+      groupName: Authentication
       groupDescription: |-
 
-        API endpoints untuk mengelola data supplier.
+        API endpoints untuk autentikasi user.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Detail supplier'
+      title: 'Data user yang sedang login'
       description: ''
       authenticated: false
       deprecated: false
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the supplier.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 1
+    urlParameters: []
+    cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -161,146 +262,8 @@ endpoints:
         content: |-
           {
             "success": true,
-            "data": {"name": "PT Graha Kalasta", "created_at": "2024-01-01 00:00:00"}
+            "user": {"id": 1, "name": "John Doe", "email": "john@example.com", "role": "user"}
           }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"message": "No query results for model [Supplier]."}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PUT
-      - PATCH
-    uri: 'api/v1/suppliers/{id}'
-    metadata:
-      custom: []
-      groupName: 'Supplier Management'
-      groupDescription: |-
-
-        API endpoints untuk mengelola data supplier.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Update supplier'
-      description: ''
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the supplier.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      name:
-        custom: []
-        name: name
-        description: 'Nama supplier.'
-        required: false
-        example: 'PT Sejahtera'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      name: 'PT Sejahtera'
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "success": true,
-            "message": "Supplier updated successfully.",
-            "data": {"id": 1, "name": "PT Sejahtera", "created_at": "2024-01-01 00:00:00"}
-          }
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"message": "No query results for model [Supplier]."}'
-        headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/suppliers/{id}'
-    metadata:
-      custom: []
-      groupName: 'Supplier Management'
-      groupDescription: |-
-
-        API endpoints untuk mengelola data supplier.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Hapus supplier'
-      description: ''
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the supplier.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: '{"success": true, "message": "Supplier deleted successfully."}'
-        headers: []
-        description: ''
-      -
-        custom: []
-        status: 404
-        content: '{"message": "No query results for model [Supplier]."}'
         headers: []
         description: ''
     responseFields: []

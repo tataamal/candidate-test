@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LayupController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -14,8 +15,20 @@ use Illuminate\Support\Facades\Route;
 
 // API routes for version 1
 Route::prefix('v1')->group(function () {
-    // Supplier routes
-    Route::apiResource('suppliers', SupplierController::class);
-    // Layups Nested Routes
-    Route::apiResource('suppliers.layups', LayupController::class);
+
+    // Public — tidak butuh token
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login',    [AuthController::class, 'login']);
+
+    // Protected — butuh token
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::get('me',      [AuthController::class, 'me']);
+
+        Route::apiResource('suppliers', SupplierController::class);
+        Route::apiResource('suppliers.layups', LayupController::class);
+    });
+
 });
+
+

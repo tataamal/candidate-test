@@ -16,6 +16,10 @@ use Illuminate\Http\JsonResponse;
  */
 class LayupController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Layups::class, 'layup');
+    }
     /**
      * List semua layup milik supplier
      *
