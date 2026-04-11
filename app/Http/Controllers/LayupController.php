@@ -16,38 +16,37 @@ use Illuminate\Http\JsonResponse;
  */
 class LayupController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Layups::class, 'layup');
-    }
     /**
      * List semua layup milik supplier
      *
      * @response 200 {
      *   "success": true,
-     *   "data": [
-     *     {
-     *       "id": 1,
-     *       "supplier_id": 1,
-     *       "name": "Layup A",
-     *       "created_at": "2024-01-01 00:00:00",
-     *      "updated_at": "2024-01-01 00:00:00"
-     *     }
-     *   ]
+     *   "data": [{"id": 1, "supplier_id": 1, "name": "Layup A", "created_at": "2024-01-01 00:00:00"}],
+     *   "meta": {"total": 1, "per_page": 10, "current_page": 1, "last_page": 1}
      * }
      */
     public function index(Supplier $supplier): JsonResponse
     {
-        $Layup = $supplier->layups()->latest()->paginate(10);
+        $this->authorize('viewAny', Layup::class);
+
+        // Supplier hanya lihat miliknya
+        if (auth()->user()->isSupplier()) {
+            $Layup = $supplier->Layup()
+                ->where('supplier_id', auth()->user()->supplier->id)
+                ->latest()
+                ->paginate(10);
+        } else {
+            $Layup = $supplier->Layup()->latest()->paginate(10);
+        }
 
         return response()->json([
             'success' => true,
-            'data' => LayupResource::collection($Layup),
-            'meta' => [
-                'total' => $Layup->total(),
-                'per_page' => $Layup->perPage(),
+            'data'    => LayupResource::collection($Layup),
+            'meta'    => [
+                'total'        => $Layup->total(),
+                'per_page'     => $Layup->perPage(),
                 'current_page' => $Layup->currentPage(),
-                'last_page' => $Layup->lastPage(),
+                'last_page'    => $Layup->lastPage(),
             ],
         ]);
     }
@@ -55,26 +54,34 @@ class LayupController extends Controller
     /**
      * Tambah layup baru ke supplier
      *
+     * @bodyParam name string required Nama layup. Example: Layup A
+     *
      * @response 201 {
      *   "success": true,
      *   "message": "Layup created successfully.",
-     *   "data": {
-     *     "id": 1,
-     *     "supplier_id": 1,
-     *     "name": "Layup A",
-     *     "created_at": "2024-01-01 00:00:00",
-     *     "updated_at": "2024-01-01 00:00:00"
-     *   }
+     *   "data": {"id": 1, "supplier_id": 1, "name": "Layup A", "created_at": "2024-01-01 00:00:00"}
      * }
+     * @response 403 {"message": "This action is unauthorized."}
      */
     public function store(StoreLayupRequest $request, Supplier $supplier): JsonResponse
     {
-        $layup = $supplier->layups()->create($request->validated());
+        $this->authorize('create', Layup::class);
+
+        // Supplier hanya bisa tambah ke supplier miliknya
+        if (auth()->user()->isSupplier()) {
+            abort_if(
+                auth()->user()->supplier?->id !== $supplier->id,
+                403,
+                'Anda tidak bisa menambah layup ke supplier lain.'
+            );
+        }
+
+        $layup = $supplier->Layup()->create($request->validated());
 
         return response()->json([
             'success' => true,
             'message' => 'Layup created successfully.',
-            'data' => new LayupResource($layup),
+            'data'    => new LayupResource($layup),
         ], 201);
     }
 
@@ -83,45 +90,38 @@ class LayupController extends Controller
      *
      * @response 200 {
      *   "success": true,
-     *   "data": {
-     *     "id": 1,
-     *     "supplier_id": 1,
-     *     "name": "Layup A",
-     *     "created_at": "2024-01-01 00:00:00"
-     *     "updated_at": "2024-01-01 00:00:00"
-     *   }
+     *   "data": {"id": 1, "supplier_id": 1, "name": "Layup A", "created_at": "2024-01-01 00:00:00"}
      * }
-     * @response 404 {
-     *   "message": "No query results for model [Layup]."
-     * }
+     * @response 403 {"message": "This action is unauthorized."}
+     * @response 404 {"message": "No query results for model [Layup]."}
      */
     public function show(Supplier $supplier, Layup $layup): JsonResponse
     {
+        $this->authorize('view', $layup);
         $this->authorizeLayup($supplier, $layup);
 
         return response()->json([
             'success' => true,
-            'data' => new LayupResource($layup),
+            'data'    => new LayupResource($layup),
         ]);
     }
 
     /**
      * Update layup
      *
+     * @bodyParam name string Nama layup. Example: Layup B
+     *
      * @response 200 {
      *   "success": true,
      *   "message": "Layup updated successfully.",
-     *   "data": {
-     *     "id": 1,
-     *     "supplier_id": 1,
-     *     "name": "Layup B",
-     *     "created_at": "2024-01-01 00:00:00",
-     *     "updated_at": "2024-01-01 00:00:00"
-     *   }
+     *   "data": {"id": 1, "supplier_id": 1, "name": "Layup B", "created_at": "2024-01-01 00:00:00"}
      * }
+     * @response 403 {"message": "This action is unauthorized."}
+     * @response 404 {"message": "No query results for model [Layup]."}
      */
     public function update(UpdateLayupRequest $request, Supplier $supplier, Layup $layup): JsonResponse
     {
+        $this->authorize('update', $layup);
         $this->authorizeLayup($supplier, $layup);
 
         $layup->update($request->validated());
@@ -129,20 +129,20 @@ class LayupController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Layup updated successfully.',
-            'data' => new LayupResource($layup),
+            'data'    => new LayupResource($layup),
         ]);
     }
 
     /**
      * Hapus layup
      *
-     * @response 200 {
-     *   "success": true,
-     *   "message": "Layup deleted successfully."
-     * }
+     * @response 200 {"success": true, "message": "Layup deleted successfully."}
+     * @response 403 {"message": "This action is unauthorized."}
+     * @response 404 {"message": "No query results for model [Layup]."}
      */
     public function destroy(Supplier $supplier, Layup $layup): JsonResponse
     {
+        $this->authorize('delete', $layup);
         $this->authorizeLayup($supplier, $layup);
 
         $layup->delete();

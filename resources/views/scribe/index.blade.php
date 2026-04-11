@@ -85,6 +85,28 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-layer-management" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="layer-management">
+                    <a href="#layer-management">Layer Management</a>
+                </li>
+                                    <ul id="tocify-subheader-layer-management" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="layer-management-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers">
+                                <a href="#layer-management-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers">List semua layer milik layup</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="layer-management-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers">
+                                <a href="#layer-management-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers">Tambah layer baru ke layup</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="layer-management-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+                                <a href="#layer-management-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">Detail layer</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="layer-management-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+                                <a href="#layer-management-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">Update layer</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="layer-management-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+                                <a href="#layer-management-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">Hapus layer</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-layup-management" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="layup-management">
                     <a href="#layup-management">Layup Management</a>
@@ -785,6 +807,1008 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
+                <h1 id="layer-management">Layer Management</h1>
+
+    <p>API endpoints untuk mengelola data layer milik layup.</p>
+
+                                <h2 id="layer-management-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers">List semua layer milik layup</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;success&quot;: true,
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;layup_id&quot;: 1,
+            &quot;layer_order&quot;: 1,
+            &quot;thickness&quot;: 2.5,
+            &quot;width&quot;: 100,
+            &quot;angle&quot;: 45,
+            &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
+        }
+    ],
+    &quot;meta&quot;: {
+        &quot;total&quot;: 1,
+        &quot;per_page&quot;: 10,
+        &quot;current_page&quot;: 1,
+        &quot;last_page&quot;: 1
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers" data-method="GET"
+      data-path="api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-suppliers--supplier_id--layups--layup_id--layers', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+                    onclick="tryItOut('GETapi-v1-suppliers--supplier_id--layups--layup_id--layers');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+                    onclick="cancelTryOut('GETapi-v1-suppliers--supplier_id--layups--layup_id--layers');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>supplier_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="supplier_id"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the supplier. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>layup_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="layup_id"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the layup. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="layer-management-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers">Tambah layer baru ke layup</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"layer_order\": 1,
+    \"thickness\": 2.5,
+    \"width\": 100,
+    \"angle\": 45
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "layer_order": 1,
+    "thickness": 2.5,
+    "width": 100,
+    "angle": 45
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers">
+            <blockquote>
+            <p>Example response (201):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;success&quot;: true,
+    &quot;message&quot;: &quot;Layer created successfully.&quot;,
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;layup_id&quot;: 1,
+        &quot;layer_order&quot;: 1,
+        &quot;thickness&quot;: 2.5,
+        &quot;width&quot;: 100,
+        &quot;angle&quot;: 45
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers" data-method="POST"
+      data-path="api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+                    onclick="tryItOut('POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+                    onclick="cancelTryOut('POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>supplier_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="supplier_id"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the supplier. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>layup_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="layup_id"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the layup. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>layer_order</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="layer_order"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="1"
+               data-component="body">
+    <br>
+<p>Urutan layer. Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>thickness</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="thickness"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="2.5"
+               data-component="body">
+    <br>
+<p>Ketebalan layer. Example: <code>2.5</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>width</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="width"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="100"
+               data-component="body">
+    <br>
+<p>Lebar layer. Example: <code>100</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>angle</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="angle"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups--layup_id--layers"
+               value="45"
+               data-component="body">
+    <br>
+<p>Sudut layer (-180 hingga 180). Example: <code>45</code></p>
+        </div>
+        </form>
+
+                    <h2 id="layer-management-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">Detail layer</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers/1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers/1"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;success&quot;: true,
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;layup_id&quot;: 1,
+        &quot;layer_order&quot;: 1,
+        &quot;thickness&quot;: 2.5,
+        &quot;width&quot;: 100,
+        &quot;angle&quot;: 45
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [Layers].&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" data-method="GET"
+      data-path="api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers/{id}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    onclick="tryItOut('GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    onclick="cancelTryOut('GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>supplier_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="supplier_id"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the supplier. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>layup_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="layup_id"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the layup. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="GETapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the layer. Example: <code>1</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="layer-management-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">Update layer</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers/1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"layer_order\": 2,
+    \"thickness\": 3,
+    \"width\": 120,
+    \"angle\": 90
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers/1"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "layer_order": 2,
+    "thickness": 3,
+    "width": 120,
+    "angle": 90
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;success&quot;: true,
+    &quot;message&quot;: &quot;Layer updated successfully.&quot;,
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;layup_id&quot;: 1,
+        &quot;layer_order&quot;: 2,
+        &quot;thickness&quot;: 3,
+        &quot;width&quot;: 120,
+        &quot;angle&quot;: 90
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [Layers].&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" data-method="PUT"
+      data-path="api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers/{id}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    onclick="tryItOut('PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    onclick="cancelTryOut('PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers/{id}</code></b>
+        </p>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>supplier_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="supplier_id"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the supplier. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>layup_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="layup_id"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the layup. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the layer. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>layer_order</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="layer_order"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="2"
+               data-component="body">
+    <br>
+<p>Urutan layer. Example: <code>2</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>thickness</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="thickness"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="3"
+               data-component="body">
+    <br>
+<p>Ketebalan layer. Example: <code>3</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>width</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="width"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="120"
+               data-component="body">
+    <br>
+<p>Lebar layer. Example: <code>120</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>angle</code></b>&nbsp;&nbsp;
+<small>number</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="angle"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="90"
+               data-component="body">
+    <br>
+<p>Sudut layer. Example: <code>90</code></p>
+        </div>
+        </form>
+
+                    <h2 id="layer-management-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">Hapus layer</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request DELETE \
+    "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers/1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/suppliers/1/layups/1/layers/1"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "DELETE",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;success&quot;: true,
+    &quot;message&quot;: &quot;Layer deleted successfully.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [Layers].&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-" data-method="DELETE"
+      data-path="api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers/{id}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    onclick="tryItOut('DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    onclick="cancelTryOut('DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-red">DELETE</small>
+            <b><code>api/v1/suppliers/{supplier_id}/layups/{layup_id}/layers/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>supplier_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="supplier_id"                data-endpoint="DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the supplier. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>layup_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="layup_id"                data-endpoint="DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the layup. Example: <code>1</code></p>
+            </div>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="DELETEapi-v1-suppliers--supplier_id--layups--layup_id--layers--id-"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the layer. Example: <code>1</code></p>
+            </div>
+                    </form>
+
                 <h1 id="layup-management">Layup Management</h1>
 
     <p>API endpoints untuk mengelola data layup milik supplier.</p>
@@ -838,10 +1862,15 @@ fetch(url, {
             &quot;id&quot;: 1,
             &quot;supplier_id&quot;: 1,
             &quot;name&quot;: &quot;Layup A&quot;,
-            &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;,
-            &quot;updated_at&quot;: &quot;2024-01-01 00:00:00&quot;
+            &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
         }
-    ]
+    ],
+    &quot;meta&quot;: {
+        &quot;total&quot;: 1,
+        &quot;per_page&quot;: 10,
+        &quot;current_page&quot;: 1,
+        &quot;last_page&quot;: 1
+    }
 }</code>
  </pre>
     </span>
@@ -948,7 +1977,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"b\"
+    \"name\": \"Layup A\"
 }"
 </code></pre></div>
 
@@ -964,7 +1993,7 @@ const headers = {
 };
 
 let body = {
-    "name": "b"
+    "name": "Layup A"
 };
 
 fetch(url, {
@@ -988,9 +2017,17 @@ fetch(url, {
         &quot;id&quot;: 1,
         &quot;supplier_id&quot;: 1,
         &quot;name&quot;: &quot;Layup A&quot;,
-        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;,
-        &quot;updated_at&quot;: &quot;2024-01-01 00:00:00&quot;
+        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
 }</code>
  </pre>
     </span>
@@ -1086,10 +2123,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="POSTapi-v1-suppliers--supplier_id--layups"
-               value="b"
+               value="Layup A"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>b</code></p>
+<p>Nama layup. Example: <code>Layup A</code></p>
         </div>
         </form>
 
@@ -1136,14 +2173,22 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-  &quot;success&quot;: true,
-  &quot;data&quot;: {
-    &quot;id&quot;: 1,
-    &quot;supplier_id&quot;: 1,
-    &quot;name&quot;: &quot;Layup A&quot;,
-    &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
-    &quot;updated_at&quot;: &quot;2024-01-01 00:00:00&quot;
-  }
+    &quot;success&quot;: true,
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;supplier_id&quot;: 1,
+        &quot;name&quot;: &quot;Layup A&quot;,
+        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -1271,7 +2316,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"b\"
+    \"name\": \"Layup B\"
 }"
 </code></pre></div>
 
@@ -1287,7 +2332,7 @@ const headers = {
 };
 
 let body = {
-    "name": "b"
+    "name": "Layup B"
 };
 
 fetch(url, {
@@ -1311,9 +2356,26 @@ fetch(url, {
         &quot;id&quot;: 1,
         &quot;supplier_id&quot;: 1,
         &quot;name&quot;: &quot;Layup B&quot;,
-        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;,
-        &quot;updated_at&quot;: &quot;2024-01-01 00:00:00&quot;
+        &quot;created_at&quot;: &quot;2024-01-01 00:00:00&quot;
     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [Layup].&quot;
 }</code>
  </pre>
     </span>
@@ -1425,10 +2487,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="PUTapi-v1-suppliers--supplier_id--layups--id-"
-               value="b"
+               value="Layup B"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>b</code></p>
+<p>Nama layup. Example: <code>Layup B</code></p>
         </div>
         </form>
 
@@ -1477,6 +2539,24 @@ fetch(url, {
 <code class="language-json" style="max-height: 300px;">{
     &quot;success&quot;: true,
     &quot;message&quot;: &quot;Layup deleted successfully.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;This action is unauthorized.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;No query results for model [Layup].&quot;
 }</code>
  </pre>
     </span>

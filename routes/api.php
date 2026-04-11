@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LayerController;
 use App\Http\Controllers\LayupController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('suppliers', SupplierController::class);
         Route::apiResource('suppliers.layups', LayupController::class);
+        Route::apiResource('suppliers.layups.layers', LayerController::class);
     });
 
 });

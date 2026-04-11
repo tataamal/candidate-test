@@ -46,22 +46,24 @@
                             </div>
                         </div>
                         @if (Route::has('login'))
-                            <div class="flex flex-col items-center gap-2 mt-6 animate-fade-in">
+                            <div class="flex flex-col items-center gap-4 mt-6 animate-fade-in z-10 w-full max-w-sm mx-auto">
                                 @guest
-                                    <a
-                                        href="{{ route('login') }}"
-                                        class=" text-xl rounded-md py-2 text-gray-200 ring-1 ring-transparent transition hover:text-white  focus:outline-none focus-visible:ring-[#FF2D20] dark:text-gray-200 dark:hover:text-white"
-                                    >
-                                        Log in
-                                    </a>
-                                    @if (Route::has('register'))
+                                    <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
                                         <a
-                                            href="{{ route('register') }}"
-                                            class="text-xl rounded-md py-2 text-gray-200 ring-1 ring-transparent transition hover:text-white  focus:outline-none focus-visible:ring-[#FF2D20] dark:text-gray-200 dark:hover:text-white"
+                                            href="{{ route('login') }}"
+                                            class="text-center text-lg font-semibold rounded-md px-8 py-3 bg-[#FF2D20] text-white transition hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20] focus-visible:ring-offset-2 shadow-lg w-full sm:w-auto"
                                         >
-                                            Register
+                                            Log in
                                         </a>
-                                    @endif
+                                        @if (Route::has('register'))
+                                            <a
+                                                href="{{ route('register') }}"
+                                                class="text-center text-lg font-semibold rounded-md px-8 py-3 bg-white text-gray-900 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 shadow-lg w-full sm:w-auto"
+                                            >
+                                                Register
+                                            </a>
+                                        @endif
+                                    </div>
                                 @endguest
                             </div>
                         @endif

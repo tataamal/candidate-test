@@ -12,7 +12,7 @@ class Supplier extends Model
 
     protected $fillable = ['name', 'user_id'];
 
-    public function layups(): HasMany
+    public function layup(): HasMany
     {
         return $this->hasMany(Layup::class, 'supplier_id');
     }

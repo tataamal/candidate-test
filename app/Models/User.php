@@ -49,9 +49,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function suppliers(): HasOne
+    public function supplier(): HasOne
     {
-        return $this->hasOne(Supplier::class);
+        return $this->hasOne(Supplier::class, 'user_id');
     }
 
     public function isAdmin(): bool

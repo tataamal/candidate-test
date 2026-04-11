@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Layups;
+use App\Models\Layup;
 use App\Models\User;
 
 class LayupPolicy
@@ -16,7 +16,7 @@ class LayupPolicy
             return true;
         }
         return null;
-    }
+    }   
 
     /**
      * Semua role bisa lihat list layup
@@ -30,7 +30,7 @@ class LayupPolicy
     /**
      * Supplier hanya bisa lihat layup miliknya
      */
-    public function view(User $user, Layups $layup): bool
+    public function view(User $user, Layup $layup): bool
     {
         if ($user->isSupplier()) {
             return $user->supplier?->id === $layup->supplier_id;
@@ -49,7 +49,7 @@ class LayupPolicy
     /**
      * Supplier hanya bisa update layup miliknya
      */
-    public function update(User $user, Layups $layup): bool
+    public function update(User $user, Layup $layup): bool
     {
         if ($user->isSupplier()) {
             return $user->supplier?->id === $layup->supplier_id;
@@ -60,7 +60,7 @@ class LayupPolicy
     /**
      * Supplier hanya bisa delete layup miliknya
      */
-    public function delete(User $user, Layups $layup): bool
+    public function delete(User $user, Layup $layup): bool
     {
         if ($user->isSupplier()) {
             return $user->supplier?->id === $layup->supplier_id;
