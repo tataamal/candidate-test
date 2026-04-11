@@ -18,3 +18,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::get('/suppliers/{id}', function ($id) {
+    return view('suppliers.show', ['supplierId' => $id]);
+})->name('suppliers.show');
+
