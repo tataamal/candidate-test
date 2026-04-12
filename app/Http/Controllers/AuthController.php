@@ -146,15 +146,16 @@ class AuthController extends Controller
      */
     public function me(): JsonResponse
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('supplier');
 
         return response()->json([
             'success' => true,
             'user'    => [
-                'id'    => $user->id,
-                'name'  => $user->name,
-                'email' => $user->email,
-                'role'  => $user->role,
+                'id'          => $user->id,
+                'name'        => $user->name,
+                'email'       => $user->email,
+                'role'        => $user->role,
+                'supplier_id' => $user->supplier?->id,
             ],
         ]);
     }

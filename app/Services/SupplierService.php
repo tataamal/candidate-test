@@ -16,9 +16,9 @@ class SupplierService
         protected SupplierRepositoryInterface $repository
     ) {}
 
-    public function getAll(): LengthAwarePaginator
+    public function getAll(User $user): LengthAwarePaginator
     {
-        return $this->repository->getAll();
+        return $this->repository->getAll($user);
     }
 
     public function create(array $data): Supplier

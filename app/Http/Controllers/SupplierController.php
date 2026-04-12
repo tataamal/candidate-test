@@ -35,7 +35,7 @@ class SupplierController extends Controller
     {
         $this->authorize('viewAny', Supplier::class);
 
-        $suppliers = $this->service->getAll();
+        $suppliers = $this->service->getAll(auth()->user());
 
         return response()->json([
             'success' => true,

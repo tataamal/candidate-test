@@ -1,3 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ──────────────────────────────────────────
+   Shared animations
+────────────────────────────────────────── */
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.4s ease-out;
+}
+
+@keyframes blur-in {
+    from { backdrop-filter: blur(10px); }
+    to   { backdrop-filter: blur(0); }
+}
+
+.animate-blur-in {
+    animation: blur-in 1s ease-out;
+}
+
+/* ──────────────────────────────────────────
+   Auth layout — tabs
+────────────────────────────────────────── */
+.tab-active {
+    border-bottom: 2px solid #367b59;
+    color: #367b59;
+    font-weight: 600;
+}
+
+.tab-inactive {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.tab-inactive:hover {
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* ──────────────────────────────────────────
+   Auth layout — modals
+────────────────────────────────────────── */
+.modal-backdrop { transition: opacity 0.2s ease; }
+.modal-box      { transition: transform 0.2s ease, opacity 0.2s ease; }
+
+/* ──────────────────────────────────────────
+   Auth layout — toast
+────────────────────────────────────────── */
+@keyframes toast-in {
+    from { opacity: 0; transform: translateX(100%); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.toast-enter { animation: toast-in 0.3s ease-out; }
+
+/* ──────────────────────────────────────────
+   Auth layout — skeleton loader
+────────────────────────────────────────── */
+@keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}

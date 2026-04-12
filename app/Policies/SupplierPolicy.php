@@ -27,11 +27,12 @@ class SupplierPolicy
     }
 
     /**
-     * Semua role bisa lihat detail supplier
+     * Supplier & user hanya bisa lihat supplier miliknya sendiri.
+     * Admin sudah di-bypass via before().
      */
     public function view(User $user, Supplier $supplier): bool
     {
-        return true;
+        return $supplier->user_id === $user->id;
     }
 
     /**
