@@ -1,193 +1,131 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Supplier Detail - CLT Manager</title>
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&display=swap" rel="stylesheet">
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script>
-            tailwind.config = {
-                theme: { extend: { fontFamily: { sans: ['Figtree', 'sans-serif'], serif: ['Merriweather', 'serif'] } } }
-            }
-        </script>
-    @endif
-    <style>
-        body { background-color: #f8fafc; }
-        .tab-active { border-bottom: 2px solid #367b59; color: #367b59; font-weight: 600; }
-        .tab-inactive { color: #6b7280; font-weight: 500; }
-        .tab-inactive:hover { color: #374151; border-bottom: 2px solid #e5e7eb; }
-        .animate-fade-in { animation: fade-in 0.4s ease-out; }
-        @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        .toast-enter { animation: toast-in 0.3s ease-out; }
-        @keyframes toast-in { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
-    </style>
-</head>
-<body class="font-sans antialiased text-gray-900 min-h-screen">
+@extends('layouts.auth')
 
-    <!-- ========== NAVBAR ========== -->
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-10 w-full shadow-sm">
-        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center gap-3 pr-6">
-                        <div class="w-8 h-8 rounded-md flex items-center justify-center text-[#367b59]">
-                            <svg class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z"/>
-                                <path d="M12 10.5L9 17h6l-3-6.5z"/>
-                            </svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-[13px] font-bold tracking-wide leading-none text-gray-900 uppercase">CLT Layup</span>
-                            <span class="text-[10px] uppercase font-semibold text-gray-500 leading-none mt-1">Manager</span>
-                        </div>
-                    </div>
-                    <div class="hidden sm:-my-px sm:ml-4 sm:flex sm:space-x-8">
-                        <a href="#" class="tab-inactive inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm transition">Overview</a>
-                        <a href="/dashboard" class="tab-active inline-flex items-center px-1 pt-1 text-sm transition">Suppliers</a>
-                        <a href="#" class="tab-inactive inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm transition">Layups</a>
-                        <a href="#" class="tab-inactive inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm transition">Layers</a>
-                    </div>
-                </div>
-                <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-6">
-                    <div class="flex items-center gap-3">
-                        <div class="h-9 w-9 rounded-full bg-[#e8f5ee] flex items-center justify-center text-[#367b59] font-bold text-sm" id="user-initials">--</div>
-                        <div class="hidden lg:flex flex-col text-left">
-                            <span class="text-xs font-bold text-gray-900" id="user-name-display">Loading...</span>
-                            <span class="text-[10px] text-gray-500 capitalize" id="user-role-display">—</span>
-                        </div>
-                    </div>
-                    <button onclick="handleLogout()" class="text-xs font-semibold text-gray-400 hover:text-red-500 transition border-l pl-4 border-gray-200">Logout</button>
-                </div>
+@push('nav-links')
+    <div class="hidden sm:-my-px sm:ml-4 sm:flex sm:space-x-8">
+        <a href="/dashboard" class="tab-inactive inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm transition">Suppliers</a>
+        <a href="#" class="tab-active inline-flex items-center px-1 pt-1 text-sm transition">Layups</a>
+        <a href="#" class="tab-inactive inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm transition">Layers</a>
+    </div>
+@endpush
+
+@section('content')
+
+    <!-- Back link -->
+    <div class="mb-6 animate-fade-in">
+        <a href="/dashboard" class="inline-flex items-center text-sm text-gray-500 hover:text-[#367b59] transition gap-1">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Suppliers
+        </a>
+    </div>
+
+    <!-- Supplier Header Card -->
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6 animate-fade-in" id="supplier-header">
+        <div class="flex items-center gap-4">
+            <div class="h-14 w-14 rounded-full flex items-center justify-center font-bold text-lg border flex-shrink-0"
+                id="supplier-avatar" style="background:#ecfdf5;color:#059669;border-color:#a7f3d0">--</div>
+            <div class="flex-1 min-w-0">
+                <div class="h-5 skeleton rounded w-48 mb-2" id="supplier-name-skeleton"></div>
+                <div class="h-3 skeleton rounded w-24" id="supplier-date-skeleton"></div>
+                <h1 class="text-xl font-bold text-gray-900 hidden" id="supplier-name" style="font-family:'Merriweather',serif;"></h1>
+                <p class="text-sm text-gray-500 hidden" id="supplier-meta"></p>
             </div>
-        </div>
-    </nav>
-
-    <!-- ========== MAIN CONTENT ========== -->
-    <main class="max-w-screen-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-
-        <!-- Back link -->
-        <div class="mb-6 animate-fade-in">
-            <a href="/dashboard" class="inline-flex items-center text-sm text-gray-500 hover:text-[#367b59] transition gap-1">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-                Back to Suppliers
-            </a>
-        </div>
-
-        <!-- Supplier Header Card -->
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6 animate-fade-in" id="supplier-header">
-            <div class="flex items-center gap-4">
-                <div class="h-14 w-14 rounded-full flex items-center justify-center font-bold text-lg border flex-shrink-0"
-                    id="supplier-avatar" style="background:#ecfdf5;color:#059669;border-color:#a7f3d0">
-                    --
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="h-5 skeleton rounded w-48 mb-2" id="supplier-name-skeleton"></div>
-                    <div class="h-3 skeleton rounded w-24" id="supplier-date-skeleton"></div>
-                    <h1 class="text-xl font-bold text-gray-900 hidden" id="supplier-name" style="font-family:'Merriweather',serif;"></h1>
-                    <p class="text-sm text-gray-500 hidden" id="supplier-meta"></p>
-                </div>
-                <div id="supplier-edit-btn" class="hidden">
-                    <button onclick="openEditModal()"
-                        class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition gap-1.5">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                        </svg>
-                        Edit
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Layups Section -->
-        <div class="animate-fade-in">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-bold text-gray-900" style="font-family:'Merriweather',serif;">Layups</h2>
-                <button id="add-layup-btn" onclick="showExportToast()" style="display:none;"
-                    class="inline-flex items-center px-3 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-[#367b59] hover:bg-[#2c6448] transition gap-1.5">
+            <!-- Edit button: admin only -->
+            <div id="supplier-edit-btn" class="hidden">
+                <button onclick="openEditSupplierModal()"
+                    class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition gap-1.5">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                     </svg>
-                    Add Layup
+                    Edit
                 </button>
             </div>
+        </div>
+    </div>
 
-            <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-white">
-                            <tr>
-                                <th class="px-6 py-4 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b">Name</th>
-                                <th class="px-6 py-4 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b">Created At</th>
-                                <th class="px-6 py-4 text-right text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-100" id="layup-table-body">
-                            <tr><td colspan="3" class="px-6 py-5"><div class="h-4 skeleton rounded w-3/4"></div></td></tr>
-                            <tr><td colspan="3" class="px-6 py-5"><div class="h-4 skeleton rounded w-2/3"></div></td></tr>
-                            <tr><td colspan="3" class="px-6 py-5"><div class="h-4 skeleton rounded w-1/2"></div></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div id="layup-empty" style="display:none;" class="py-12 text-center">
-                    <svg class="mx-auto h-8 w-8 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/>
-                    </svg>
-                    <p class="text-sm text-gray-500">No layups found for this supplier.</p>
-                </div>
-                <div class="bg-white px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-                    <p class="text-sm text-gray-500" id="layup-pagination-info">—</p>
-                    <nav class="relative z-0 inline-flex rounded shadow-sm -space-x-px border border-gray-200">
-                        <button id="layup-prev-btn" onclick="goToLayupPage(layupCurrentPage - 1)"
-                            class="relative inline-flex items-center px-2 py-2 rounded-l bg-white text-sm text-gray-400 hover:bg-gray-50 border-r border-gray-200 disabled:opacity-40 disabled:cursor-not-allowed" disabled>
-                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                        <span id="layup-page-indicator" class="relative inline-flex items-center px-4 py-2 bg-white text-sm text-gray-700 border-r border-gray-200">1 / 1</span>
-                        <button id="layup-next-btn" onclick="goToLayupPage(layupCurrentPage + 1)"
-                            class="relative inline-flex items-center px-2 py-2 rounded-r bg-white text-sm text-gray-400 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed" disabled>
-                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                    </nav>
-                </div>
-            </div>
+    <!-- Layups Section -->
+    <div class="animate-fade-in">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold text-gray-900" style="font-family:'Merriweather',serif;">Layups</h2>
+            <!-- Add Layup: admin + supplier -->
+            <button id="add-layup-btn" onclick="openAddLayupModal()" style="display:none;"
+                class="inline-flex items-center px-3 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-[#367b59] hover:bg-[#2c6448] transition gap-1.5">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Add Layup
+            </button>
         </div>
 
-    </main>
+        <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-white">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b">Name</th>
+                            <th class="px-6 py-4 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b">Created At</th>
+                            <th class="px-6 py-4 text-right text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-100" id="layup-table-body">
+                        <tr><td colspan="3" class="px-6 py-5"><div class="h-4 skeleton rounded w-3/4"></div></td></tr>
+                        <tr><td colspan="3" class="px-6 py-5"><div class="h-4 skeleton rounded w-2/3"></div></td></tr>
+                        <tr><td colspan="3" class="px-6 py-5"><div class="h-4 skeleton rounded w-1/2"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
 
+            <div id="layup-empty" style="display:none;" class="py-12 text-center">
+                <svg class="mx-auto h-8 w-8 text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/>
+                </svg>
+                <p class="text-sm text-gray-500">No layups found for this supplier.</p>
+            </div>
+
+            <div class="bg-white px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                <p class="text-sm text-gray-500" id="layup-pagination-info">—</p>
+                <nav class="relative z-0 inline-flex rounded shadow-sm -space-x-px border border-gray-200">
+                    <button id="layup-prev-btn" onclick="goToLayupPage(layupPage - 1)"
+                        class="relative inline-flex items-center px-2 py-2 rounded-l bg-white text-sm text-gray-400 hover:bg-gray-50 border-r border-gray-200 disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <span id="layup-page-indicator" class="relative inline-flex items-center px-4 py-2 bg-white text-sm text-gray-700 border-r border-gray-200">1 / 1</span>
+                    <button id="layup-next-btn" onclick="goToLayupPage(layupPage + 1)"
+                        class="relative inline-flex items-center px-2 py-2 rounded-r bg-white text-sm text-gray-400 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+@push('modals')
     <!-- ========== MODAL: EDIT SUPPLIER ========== -->
-    <div id="modal-edit" class="fixed inset-0 z-50 hidden" aria-modal="true">
-        <div class="modal-backdrop fixed inset-0 bg-black/40" onclick="closeEditModal()"></div>
+    <div id="modal-edit-supplier" class="fixed inset-0 z-50 hidden" aria-modal="true">
+        <div class="modal-backdrop fixed inset-0 bg-black/40" onclick="closeEditSupplierModal()"></div>
         <div class="fixed inset-0 flex items-center justify-center p-4">
-            <div class="bg-white rounded-xl shadow-xl w-full max-w-md relative">
+            <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-md relative">
                 <div class="px-6 py-5 border-b border-gray-100">
                     <h3 class="text-base font-bold text-gray-900" style="font-family:'Merriweather',serif;">Edit Supplier</h3>
                 </div>
-                <form onsubmit="submitUpdate(event)" class="px-6 py-5 space-y-4">
-                    <div id="edit-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded-r-md text-sm"></div>
+                <form onsubmit="submitEditSupplier(event)" class="px-6 py-5 space-y-4">
+                    <div id="edit-supplier-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded-r-md text-sm"></div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Supplier Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="edit-name" required maxlength="255"
+                        <input type="text" id="edit-supplier-name" required maxlength="255"
                             class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#367b59] focus:border-[#367b59] transition">
                     </div>
                     <div class="flex justify-end gap-3 pt-2">
-                        <button type="button" onclick="closeEditModal()"
+                        <button type="button" onclick="closeEditSupplierModal()"
                             class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Cancel</button>
-                        <button type="submit" id="edit-submit-btn"
+                        <button type="submit" id="edit-supplier-submit-btn"
                             class="px-4 py-2 text-sm font-medium text-white bg-[#367b59] rounded-lg hover:bg-[#2c6448] transition disabled:opacity-60">Save Changes</button>
                     </div>
                 </form>
@@ -195,276 +133,409 @@
         </div>
     </div>
 
-    <!-- ========== TOAST ========== -->
-    <div id="toast-container" class="fixed top-4 right-4 z-[60] flex flex-col gap-2 pointer-events-none"></div>
+    <!-- ========== MODAL: ADD LAYUP ========== -->
+    <div id="modal-add-layup" class="fixed inset-0 z-50 hidden" aria-modal="true">
+        <div class="modal-backdrop fixed inset-0 bg-black/40" onclick="closeAddLayupModal()"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-md relative">
+                <div class="px-6 py-5 border-b border-gray-100">
+                    <h3 class="text-base font-bold text-gray-900" style="font-family:'Merriweather',serif;">Add Layup</h3>
+                </div>
+                <form id="add-layup-form" onsubmit="submitAddLayup(event)" class="px-6 py-5 space-y-4">
+                    <div id="add-layup-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded-r-md text-sm"></div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Layup Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="add-layup-name" required maxlength="255"
+                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#367b59] focus:border-[#367b59] transition"
+                            placeholder="e.g. Layup A">
+                    </div>
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button type="button" onclick="closeAddLayupModal()"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+                        <button type="submit" id="add-layup-submit-btn"
+                            class="px-4 py-2 text-sm font-medium text-white bg-[#367b59] rounded-lg hover:bg-[#2c6448] transition disabled:opacity-60">Create Layup</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        const SUPPLIER_ID = {{ $supplierId }};
-        let currentUser  = null;
-        let supplier     = null;
-        let layupCurrentPage = 1;
-        let layupLastPage    = 1;
-        let layupTotal       = 0;
-        let layupPerPage     = 15;
+    <!-- ========== MODAL: EDIT LAYUP ========== -->
+    <div id="modal-edit-layup" class="fixed inset-0 z-50 hidden" aria-modal="true">
+        <div class="modal-backdrop fixed inset-0 bg-black/40" onclick="closeEditLayupModal()"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-md relative">
+                <div class="px-6 py-5 border-b border-gray-100">
+                    <h3 class="text-base font-bold text-gray-900" style="font-family:'Merriweather',serif;">Edit Layup</h3>
+                </div>
+                <form id="edit-layup-form" onsubmit="submitEditLayup(event)" class="px-6 py-5 space-y-4">
+                    <input type="hidden" id="edit-layup-id">
+                    <div id="edit-layup-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded-r-md text-sm"></div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Layup Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="edit-layup-name" required maxlength="255"
+                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#367b59] focus:border-[#367b59] transition">
+                    </div>
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button type="button" onclick="closeEditLayupModal()"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+                        <button type="submit" id="edit-layup-submit-btn"
+                            class="px-4 py-2 text-sm font-medium text-white bg-[#367b59] rounded-lg hover:bg-[#2c6448] transition disabled:opacity-60">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-        const AVATAR_COLORS = [
-            { bg:'#eff6ff', text:'#2563eb', border:'#bfdbfe' },
-            { bg:'#ecfdf5', text:'#059669', border:'#a7f3d0' },
-            { bg:'#fff7ed', text:'#d97706', border:'#fed7aa' },
-            { bg:'#faf5ff', text:'#7c3aed', border:'#ddd6fe' },
-            { bg:'#f0fdfa', text:'#0d9488', border:'#99f6e4' },
-            { bg:'#fdf2f8', text:'#db2777', border:'#fbcfe8' },
-        ];
+    <!-- ========== MODAL: DELETE LAYUP ========== -->
+    <div id="modal-delete-layup" class="fixed inset-0 z-50 hidden" aria-modal="true">
+        <div class="modal-backdrop fixed inset-0 bg-black/40" onclick="closeDeleteLayupModal()"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-sm relative p-6">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
+                        <svg class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-900">Delete Layup</h3>
+                        <p class="text-sm text-gray-500 mt-1">Are you sure you want to delete <span id="delete-layup-name" class="font-semibold text-gray-700"></span>? All associated layers will also be removed. This action cannot be undone.</p>
+                    </div>
+                </div>
+                <input type="hidden" id="delete-layup-id">
+                <div class="flex justify-end gap-3 mt-5">
+                    <button type="button" onclick="closeDeleteLayupModal()"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+                    <button type="button" onclick="submitDeleteLayup()" id="delete-layup-confirm-btn"
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition disabled:opacity-60">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
 
-        function avatarColor(name) {
-            let h = 0;
-            for (let c of (name || '')) h = (h * 31 + c.charCodeAt(0)) % AVATAR_COLORS.length;
-            return AVATAR_COLORS[h];
+@push('scripts')
+<script>
+const SUPPLIER_ID = {{ $supplierId }};
+
+let supplier  = null;
+let allLayups = [];
+let layupPage = 1, layupLastPage = 1, layupTotal = 0, layupPerPage = 15;
+
+// ─── Register Escape handler for page modals ──────────────────────────────────
+window._escapeHandlers = function () {
+    ['modal-edit-supplier','modal-add-layup','modal-edit-layup','modal-delete-layup'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
+    });
+};
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    const user = await window.authReady;
+    await Promise.all([loadSupplier(), loadLayups(1)]);
+});
+
+// ─── Load Supplier ────────────────────────────────────────────────────────────
+async function loadSupplier() {
+    try {
+        const res  = await window.apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}`);
+        const data = await res.json();
+        if (!res.ok) {
+            if (res.status === 401) { window.location.href = '/login'; return; }
+            window.location.href = '/dashboard';
+            return;
         }
+        supplier = data.data;
+        renderSupplierHeader();
+    } catch (err) { console.error(err); }
+}
 
-        function initials(name) {
-            if (!name) return '??';
-            const parts = name.trim().split(/\s+/);
-            if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-        }
+function renderSupplierHeader() {
+    if (!supplier) return;
+    const user  = window.currentUser;
+    const color = window.avatarColor(supplier.name);
+    const av    = document.getElementById('supplier-avatar');
+    av.textContent       = window.initials(supplier.name);
+    av.style.background  = color.bg;
+    av.style.color       = color.text;
+    av.style.borderColor = color.border;
 
-        function formatDate(str) {
-            if (!str) return '—';
-            return new Date(str).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-        }
+    document.getElementById('supplier-name-skeleton').style.display = 'none';
+    document.getElementById('supplier-date-skeleton').style.display = 'none';
 
-        async function apiFetch(url, options = {}) {
-            const defaults = { headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } };
-            return fetch(url, { ...defaults, ...options, headers: { ...defaults.headers, ...(options.headers || {}) } });
-        }
+    const nameEl = document.getElementById('supplier-name');
+    nameEl.textContent = supplier.name;
+    nameEl.classList.remove('hidden');
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadUser();
-            await Promise.all([loadSupplier(), loadLayups(1)]);
-        });
+    const metaEl = document.getElementById('supplier-meta');
+    metaEl.textContent = `ID #${String(supplier.id).padStart(4,'0')} · Added ${window.formatDate(supplier.created_at)}`;
+    metaEl.classList.remove('hidden');
 
-        async function loadUser() {
-            try {
-                const res  = await apiFetch('/api/v1/me');
-                const data = await res.json();
-                if (!res.ok || !data.success) { window.location.href = '/login'; return; }
-                currentUser = data.user;
-                document.getElementById('user-name-display').textContent = currentUser.name;
-                document.getElementById('user-role-display').textContent  = currentUser.role;
-                document.getElementById('user-initials').textContent      = initials(currentUser.name);
-            } catch (err) { console.error(err); }
-        }
+    // Admin: show edit supplier + add layup
+    if (user?.role === 'admin') {
+        document.getElementById('supplier-edit-btn').classList.remove('hidden');
+        document.getElementById('add-layup-btn').style.display = '';
+    }
+    // Supplier: add layup only (no edit supplier)
+    if (user?.role === 'supplier') {
+        document.getElementById('add-layup-btn').style.display = '';
+    }
+}
 
-        async function loadSupplier() {
-            try {
-                const res  = await apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}`);
-                const data = await res.json();
-                if (!res.ok) {
-                    if (res.status === 401) { window.location.href = '/login'; return; }
-                    if (res.status === 404 || res.status === 403) { window.location.href = '/dashboard'; return; }
-                    return;
-                }
-                supplier = data.data;
-                renderSupplierHeader();
-            } catch (err) { console.error(err); }
-        }
+// ─── Load Layups ──────────────────────────────────────────────────────────────
+async function loadLayups(page = 1) {
+    document.getElementById('layup-table-body').innerHTML =
+        [1,2,3].map(() => `<tr><td colspan="3" class="px-6 py-5"><div class="h-4 skeleton rounded w-2/3"></div></td></tr>`).join('');
+    document.getElementById('layup-empty').style.display = 'none';
 
-        function renderSupplierHeader() {
-            if (!supplier) return;
-            const color = avatarColor(supplier.name);
-            const avatar = document.getElementById('supplier-avatar');
-            avatar.textContent = initials(supplier.name);
-            avatar.style.background   = color.bg;
-            avatar.style.color        = color.text;
-            avatar.style.borderColor  = color.border;
+    try {
+        const res  = await window.apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}/layups?page=${page}`);
+        const data = await res.json();
+        if (!res.ok) { renderLayupEmpty(); return; }
 
-            document.getElementById('supplier-name-skeleton').style.display = 'none';
-            document.getElementById('supplier-date-skeleton').style.display = 'none';
+        allLayups    = data.data || [];
+        layupPage     = data.meta?.current_page ?? 1;
+        layupLastPage = data.meta?.last_page     ?? 1;
+        layupTotal    = data.meta?.total         ?? allLayups.length;
+        layupPerPage  = data.meta?.per_page      ?? 15;
 
-            const nameEl = document.getElementById('supplier-name');
-            nameEl.textContent = supplier.name;
-            nameEl.classList.remove('hidden');
+        renderLayups();
+    } catch (err) { console.error(err); renderLayupEmpty(); }
+}
 
-            const metaEl = document.getElementById('supplier-meta');
-            metaEl.textContent = `ID #${String(supplier.id).padStart(4,'0')} · Added ${formatDate(supplier.created_at)}`;
-            metaEl.classList.remove('hidden');
+function renderLayups() {
+    const tbody   = document.getElementById('layup-table-body');
+    const user    = window.currentUser;
+    const canEdit = user?.role === 'admin' || user?.role === 'supplier';
 
-            // Show edit button for admin
-            if (currentUser?.role === 'admin') {
-                document.getElementById('supplier-edit-btn').classList.remove('hidden');
-                document.getElementById('add-layup-btn').style.display = '';
-            }
-            // Supplier role can also add/edit their own layups
-            if (currentUser?.role === 'supplier') {
-                document.getElementById('add-layup-btn').style.display = '';
-            }
-        }
+    if (allLayups.length === 0) { renderLayupEmpty(); return; }
+    document.getElementById('layup-empty').style.display = 'none';
 
-        async function loadLayups(page = 1) {
-            document.getElementById('layup-table-body').innerHTML = `
-                ${[1,2,3].map(() => `<tr><td colspan="3" class="px-6 py-5"><div class="h-4 skeleton rounded w-2/3"></div></td></tr>`).join('')}`;
-            document.getElementById('layup-empty').style.display = 'none';
-
-            try {
-                const res  = await apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}/layups?page=${page}`);
-                const data = await res.json();
-                if (!res.ok) { renderLayupEmpty(); return; }
-
-                const layups = data.data || [];
-                layupCurrentPage = data.meta?.current_page ?? 1;
-                layupLastPage    = data.meta?.last_page     ?? 1;
-                layupTotal       = data.meta?.total         ?? layups.length;
-                layupPerPage     = data.meta?.per_page      ?? 15;
-
-                renderLayups(layups);
-            } catch (err) {
-                console.error(err);
-                renderLayupEmpty();
-            }
-        }
-
-        function renderLayups(layups) {
-            const tbody = document.getElementById('layup-table-body');
-            const empty = document.getElementById('layup-empty');
-            const isAdmin    = currentUser?.role === 'admin';
-            const isSupplier = currentUser?.role === 'supplier';
-
-            if (layups.length === 0) { renderLayupEmpty(); return; }
-
-            empty.style.display = 'none';
-            tbody.innerHTML = layups.map(l => {
-                const canEdit = isAdmin || isSupplier;
-                const actions = canEdit ? `
+    tbody.innerHTML = allLayups.map(l => {
+        const crudBtns = canEdit ? `
+            <button onclick="openEditLayupModal(${l.id})"
+                class="p-1.5 text-gray-400 hover:text-[#367b59] hover:bg-[#ecfdf5] rounded transition" title="Edit">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                </svg>
+            </button>
+            <button onclick="openDeleteLayupModal(${l.id})"
+                class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition" title="Delete">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </button>` : '';
+        return `
+        <tr class="hover:bg-gray-50 transition">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${window.escapeHtml(l.name)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${window.formatDate(l.created_at)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">
+                <div class="inline-flex items-center gap-1">
                     <a href="/suppliers/${SUPPLIER_ID}/layups/${l.id}"
                         class="p-1.5 text-gray-400 hover:text-[#367b59] hover:bg-[#ecfdf5] rounded transition" title="View layers">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                         </svg>
-                    </a>` : `
-                    <a href="/suppliers/${SUPPLIER_ID}/layups/${l.id}"
-                        class="p-1.5 text-gray-400 hover:text-[#367b59] hover:bg-[#ecfdf5] rounded transition" title="View layers">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                        </svg>
-                    </a>`;
-                return `
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="text-sm font-medium text-gray-900">${escapeHtml(l.name)}</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${formatDate(l.created_at)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right">
-                        <div class="inline-flex items-center gap-1">${actions}</div>
-                    </td>
-                </tr>`;
-            }).join('');
+                    </a>
+                    ${crudBtns}
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
 
-            updateLayupPagination();
+    updateLayupPagination();
+}
+
+function renderLayupEmpty() {
+    document.getElementById('layup-table-body').innerHTML = '';
+    document.getElementById('layup-empty').style.display = '';
+    updateLayupPagination();
+}
+
+function updateLayupPagination() {
+    const start = layupTotal > 0 ? (layupPage - 1) * layupPerPage + 1 : 0;
+    const end   = Math.min(layupPage * layupPerPage, layupTotal);
+    document.getElementById('layup-pagination-info').textContent =
+        layupTotal > 0 ? `Showing ${start}–${end} of ${layupTotal} layups` : 'No layups';
+    document.getElementById('layup-page-indicator').textContent = `${layupPage} / ${layupLastPage}`;
+    document.getElementById('layup-prev-btn').disabled = layupPage <= 1;
+    document.getElementById('layup-next-btn').disabled = layupPage >= layupLastPage;
+}
+
+function goToLayupPage(page) {
+    if (page < 1 || page > layupLastPage) return;
+    loadLayups(page);
+}
+
+// ─── Edit Supplier ────────────────────────────────────────────────────────────
+function openEditSupplierModal() {
+    if (!supplier) return;
+    document.getElementById('edit-supplier-name').value = supplier.name;
+    document.getElementById('edit-supplier-error').classList.add('hidden');
+    document.getElementById('modal-edit-supplier').classList.remove('hidden');
+    setTimeout(() => document.getElementById('edit-supplier-name').focus(), 50);
+}
+
+function closeEditSupplierModal() {
+    document.getElementById('modal-edit-supplier').classList.add('hidden');
+}
+
+async function submitEditSupplier(e) {
+    e.preventDefault();
+    const btn      = document.getElementById('edit-supplier-submit-btn');
+    const errorDiv = document.getElementById('edit-supplier-error');
+    const name     = document.getElementById('edit-supplier-name').value.trim();
+
+    errorDiv.classList.add('hidden');
+    btn.disabled = true; btn.textContent = 'Saving...';
+
+    try {
+        const res  = await window.apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}`, { method: 'PUT', body: JSON.stringify({ name }) });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            supplier = data.data;
+            closeEditSupplierModal();
+            renderSupplierHeader();
+            window.showToast('Supplier updated successfully.', 'success');
+        } else {
+            const msg = data.errors ? Object.values(data.errors).flat().join(' ') : (data.message || 'Failed to update.');
+            errorDiv.textContent = msg;
+            errorDiv.classList.remove('hidden');
         }
+    } catch (err) {
+        errorDiv.textContent = 'Network error. Please try again.';
+        errorDiv.classList.remove('hidden');
+    } finally {
+        btn.disabled = false; btn.textContent = 'Save Changes';
+    }
+}
 
-        function renderLayupEmpty() {
-            document.getElementById('layup-table-body').innerHTML = '';
-            document.getElementById('layup-empty').style.display = '';
-            updateLayupPagination();
+// ─── Add Layup ────────────────────────────────────────────────────────────────
+function openAddLayupModal() {
+    document.getElementById('add-layup-form').reset();
+    document.getElementById('add-layup-error').classList.add('hidden');
+    document.getElementById('modal-add-layup').classList.remove('hidden');
+    setTimeout(() => document.getElementById('add-layup-name').focus(), 50);
+}
+
+function closeAddLayupModal() {
+    document.getElementById('modal-add-layup').classList.add('hidden');
+}
+
+async function submitAddLayup(e) {
+    e.preventDefault();
+    const btn      = document.getElementById('add-layup-submit-btn');
+    const errorDiv = document.getElementById('add-layup-error');
+    const name     = document.getElementById('add-layup-name').value.trim();
+
+    errorDiv.classList.add('hidden');
+    btn.disabled = true; btn.textContent = 'Creating...';
+
+    try {
+        const res  = await window.apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}/layups`, { method: 'POST', body: JSON.stringify({ name }) });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            closeAddLayupModal();
+            window.showToast(`Layup "${name}" created successfully.`, 'success');
+            await loadLayups(layupPage);
+        } else {
+            const msg = data.errors ? Object.values(data.errors).flat().join(' ') : (data.message || 'Failed to create layup.');
+            errorDiv.textContent = msg;
+            errorDiv.classList.remove('hidden');
         }
+    } catch (err) {
+        errorDiv.textContent = 'Network error. Please try again.';
+        errorDiv.classList.remove('hidden');
+    } finally {
+        btn.disabled = false; btn.textContent = 'Create Layup';
+    }
+}
 
-        function updateLayupPagination() {
-            const startItem = layupTotal > 0 ? (layupCurrentPage - 1) * layupPerPage + 1 : 0;
-            const endItem   = Math.min(layupCurrentPage * layupPerPage, layupTotal);
-            document.getElementById('layup-pagination-info').textContent =
-                layupTotal > 0 ? `Showing ${startItem}–${endItem} of ${layupTotal} layups` : 'No layups';
-            document.getElementById('layup-page-indicator').textContent = `${layupCurrentPage} / ${layupLastPage}`;
-            document.getElementById('layup-prev-btn').disabled = layupCurrentPage <= 1;
-            document.getElementById('layup-next-btn').disabled = layupCurrentPage >= layupLastPage;
+// ─── Edit Layup ───────────────────────────────────────────────────────────────
+function openEditLayupModal(id) {
+    const layup = allLayups.find(l => l.id === id);
+    if (!layup) return;
+    document.getElementById('edit-layup-id').value   = layup.id;
+    document.getElementById('edit-layup-name').value = layup.name;
+    document.getElementById('edit-layup-error').classList.add('hidden');
+    document.getElementById('modal-edit-layup').classList.remove('hidden');
+    setTimeout(() => document.getElementById('edit-layup-name').focus(), 50);
+}
+
+function closeEditLayupModal() {
+    document.getElementById('modal-edit-layup').classList.add('hidden');
+}
+
+async function submitEditLayup(e) {
+    e.preventDefault();
+    const btn      = document.getElementById('edit-layup-submit-btn');
+    const errorDiv = document.getElementById('edit-layup-error');
+    const id       = document.getElementById('edit-layup-id').value;
+    const name     = document.getElementById('edit-layup-name').value.trim();
+
+    errorDiv.classList.add('hidden');
+    btn.disabled = true; btn.textContent = 'Saving...';
+
+    try {
+        const res  = await window.apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}/layups/${id}`, { method: 'PUT', body: JSON.stringify({ name }) });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            closeEditLayupModal();
+            window.showToast('Layup updated successfully.', 'success');
+            await loadLayups(layupPage);
+        } else {
+            const msg = data.errors ? Object.values(data.errors).flat().join(' ') : (data.message || 'Failed to update layup.');
+            errorDiv.textContent = msg;
+            errorDiv.classList.remove('hidden');
         }
+    } catch (err) {
+        errorDiv.textContent = 'Network error. Please try again.';
+        errorDiv.classList.remove('hidden');
+    } finally {
+        btn.disabled = false; btn.textContent = 'Save Changes';
+    }
+}
 
-        function goToLayupPage(page) {
-            if (page < 1 || page > layupLastPage) return;
-            loadLayups(page);
+// ─── Delete Layup ─────────────────────────────────────────────────────────────
+function openDeleteLayupModal(id) {
+    const layup = allLayups.find(l => l.id === id);
+    if (!layup) return;
+    document.getElementById('delete-layup-id').value         = layup.id;
+    document.getElementById('delete-layup-name').textContent = layup.name;
+    document.getElementById('modal-delete-layup').classList.remove('hidden');
+}
+
+function closeDeleteLayupModal() {
+    document.getElementById('modal-delete-layup').classList.add('hidden');
+}
+
+async function submitDeleteLayup() {
+    const btn = document.getElementById('delete-layup-confirm-btn');
+    const id  = document.getElementById('delete-layup-id').value;
+
+    btn.disabled = true; btn.textContent = 'Deleting...';
+
+    try {
+        const res  = await window.apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}/layups/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            closeDeleteLayupModal();
+            window.showToast('Layup deleted successfully.', 'success');
+            const newPage = (allLayups.length === 1 && layupPage > 1) ? layupPage - 1 : layupPage;
+            await loadLayups(newPage);
+        } else {
+            closeDeleteLayupModal();
+            window.showToast(data.message || 'Failed to delete layup.', 'error');
         }
-
-        // ─── Edit Supplier ────────────────────────────────────────────────────
-        function openEditModal() {
-            if (!supplier) return;
-            document.getElementById('edit-name').value = supplier.name;
-            document.getElementById('edit-error').classList.add('hidden');
-            document.getElementById('modal-edit').classList.remove('hidden');
-            setTimeout(() => document.getElementById('edit-name').focus(), 50);
-        }
-
-        function closeEditModal() {
-            document.getElementById('modal-edit').classList.add('hidden');
-        }
-
-        async function submitUpdate(e) {
-            e.preventDefault();
-            const btn      = document.getElementById('edit-submit-btn');
-            const errorDiv = document.getElementById('edit-error');
-            const name     = document.getElementById('edit-name').value.trim();
-
-            errorDiv.classList.add('hidden');
-            btn.disabled    = true;
-            btn.textContent = 'Saving...';
-
-            try {
-                const res  = await apiFetch(`/api/v1/suppliers/${SUPPLIER_ID}`, { method: 'PUT', body: JSON.stringify({ name }) });
-                const data = await res.json();
-                if (res.ok && data.success) {
-                    supplier = data.data;
-                    closeEditModal();
-                    renderSupplierHeader();
-                    showToast('Supplier updated successfully.', 'success');
-                } else {
-                    const msg = data.errors ? Object.values(data.errors).flat().join(' ') : (data.message || 'Failed to update.');
-                    errorDiv.textContent = msg;
-                    errorDiv.classList.remove('hidden');
-                }
-            } catch (err) {
-                errorDiv.textContent = 'Network error. Please try again.';
-                errorDiv.classList.remove('hidden');
-            } finally {
-                btn.disabled    = false;
-                btn.textContent = 'Save Changes';
-            }
-        }
-
-        // ─── Helpers ──────────────────────────────────────────────────────────
-        async function handleLogout() {
-            try { await apiFetch('/api/v1/logout', { method: 'POST' }); } catch (e) {}
-            window.location.href = '/login';
-        }
-
-        function showExportToast() {
-            showToast('Fitur ini masih dalam pengembangan 🚧', 'info');
-        }
-
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const colors = { success:'bg-white border-l-4 border-[#367b59]', error:'bg-white border-l-4 border-red-500', info:'bg-white border-l-4 border-blue-400' };
-            const icons  = {
-                success: '<svg class="h-4 w-4 text-[#367b59] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>',
-                error:   '<svg class="h-4 w-4 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>',
-                info:    '<svg class="h-4 w-4 text-blue-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
-            };
-            const toast = document.createElement('div');
-            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-lg shadow-md text-sm text-gray-800 max-w-sm ${colors[type]} toast-enter`;
-            toast.innerHTML = `${icons[type]}<span class="flex-1">${escapeHtml(message)}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0'; toast.style.transform = 'translateX(100%)'; toast.style.transition = 'opacity 0.3s, transform 0.3s';
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
-        }
-
-        function escapeHtml(str) {
-            const map = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' };
-            return String(str).replace(/[&<>"']/g, m => map[m]);
-        }
-
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
-    </script>
-</body>
-</html>
+    } catch (err) {
+        closeDeleteLayupModal();
+        window.showToast('Network error. Please try again.', 'error');
+    } finally {
+        btn.disabled = false; btn.textContent = 'Delete';
+    }
+}
+</script>
+@endpush

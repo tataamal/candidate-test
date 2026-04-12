@@ -18,7 +18,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/suppliers/{id}', function ($id) {
-    return view('suppliers.show', ['supplierId' => $id]);
+Route::get('/suppliers/{supplierId}', function ($supplierId) {
+    return view('suppliers.show', ['supplierId' => $supplierId]);
 })->name('suppliers.show');
+
+Route::get('/suppliers/{supplierId}/layups/{layupId}', function ($supplierId, $layupId) {
+    return view('layups.show', ['supplierId' => $supplierId, 'layupId' => $layupId]);
+})->name('layups.show');
 

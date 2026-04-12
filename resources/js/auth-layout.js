@@ -1,7 +1,12 @@
-// ─── State ────────────────────────────────────────────────────────────────────
+// ─── Auth-Ready Promise ───────────────────────────────────────────────────────
+// Page scripts can `await window.authReady` to get currentUser once loaded.
+let _resolveAuthReady;
+window.authReady = new Promise(resolve => { _resolveAuthReady = resolve; });
+
+// ─── State (dashboard-only) ───────────────────────────────────────────────────
 let currentUser  = null;
-let allSuppliers = [];   // full page from API
-let filteredRows = [];   // after client-side search
+let allSuppliers = [];
+let filteredRows = [];
 let currentPage  = 1;
 let lastPage     = 1;
 let totalItems   = 0;
@@ -37,7 +42,7 @@ function formatDate(str) {
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-// ─── API Helpers ──────────────────────────────────────────────────────────────
+// ─── API Helper ───────────────────────────────────────────────────────────────
 async function apiFetch(url, options = {}) {
     const defaults = {
         headers: {
@@ -53,13 +58,7 @@ async function apiFetch(url, options = {}) {
     });
 }
 
-// ─── Init ─────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadUser();
-    await loadSuppliers(1);
-});
-
-// ─── Load User ────────────────────────────────────────────────────────────────
+// ─── Load User (navbar + authReady) ──────────────────────────────────────────
 async function loadUser() {
     try {
         const res  = await apiFetch('/api/v1/me');
@@ -70,23 +69,28 @@ async function loadUser() {
             return;
         }
 
-        currentUser = data.user;
+        currentUser        = data.user;
+        window.currentUser = data.user;
 
         document.getElementById('user-name-display').textContent = currentUser.name;
         document.getElementById('user-role-display').textContent  = currentUser.role;
         document.getElementById('user-initials').textContent      = initials(currentUser.name);
 
-        // Show Add Supplier button only for admin
-        if (currentUser.role === 'admin') {
-            document.getElementById('add-supplier-btn-wrapper').style.display = '';
+        // Dashboard-only: show Add Supplier button for admin
+        const addBtn = document.getElementById('add-supplier-btn-wrapper');
+        if (addBtn && currentUser.role === 'admin') {
+            addBtn.style.display = '';
         }
 
     } catch (err) {
         console.error('Failed to load user', err);
+    } finally {
+        // Always resolve so page scripts aren't left hanging
+        _resolveAuthReady(window.currentUser ?? null);
     }
 }
 
-// ─── Load Suppliers ───────────────────────────────────────────────────────────
+// ─── Load Suppliers (dashboard only) ─────────────────────────────────────────
 async function loadSuppliers(page = 1) {
     setTableLoading(true);
     try {
@@ -117,7 +121,7 @@ async function loadSuppliers(page = 1) {
     }
 }
 
-// ─── Search (client-side on current page) ────────────────────────────────────
+// ─── Search ───────────────────────────────────────────────────────────────────
 let searchTimer = null;
 function handleSearch(value) {
     searchQuery = value.trim().toLowerCase();
@@ -132,10 +136,11 @@ function applySearch() {
     renderTable();
 }
 
-// ─── Render Table ─────────────────────────────────────────────────────────────
+// ─── Render Supplier Table ────────────────────────────────────────────────────
 function renderTable() {
     const tbody = document.getElementById('supplier-table-body');
     const empty = document.getElementById('empty-state');
+    if (!tbody) return;
 
     if (filteredRows.length === 0) {
         tbody.innerHTML = '';
@@ -211,7 +216,6 @@ function updatePagination() {
         totalItems > 0 ? `Showing ${startItem}–${endItem} of ${totalItems} suppliers` : 'No results';
 
     document.getElementById('page-indicator').textContent = `${currentPage} / ${lastPage}`;
-
     document.getElementById('prev-btn').disabled = currentPage <= 1;
     document.getElementById('next-btn').disabled = currentPage >= lastPage;
 }
@@ -221,10 +225,12 @@ function goToPage(page) {
     loadSuppliers(page);
 }
 
-// ─── Loading / Empty States ───────────────────────────────────────────────────
+// ─── Loading / Empty ──────────────────────────────────────────────────────────
 function setTableLoading(loading) {
+    const tbody = document.getElementById('supplier-table-body');
+    if (!tbody) return;
     if (loading) {
-        document.getElementById('supplier-table-body').innerHTML = `
+        tbody.innerHTML = `
             ${[1, 2, 3, 4, 5].map(() => `
             <tr>
                 <td class="px-6 py-4">
@@ -239,18 +245,22 @@ function setTableLoading(loading) {
                 <td class="px-6 py-4"><div class="h-3 skeleton rounded w-24"></div></td>
                 <td class="px-6 py-4 text-right"><div class="h-3 skeleton rounded w-16 ml-auto"></div></td>
             </tr>`).join('')}`;
-        document.getElementById('empty-state').style.display = 'none';
+        const empty = document.getElementById('empty-state');
+        if (empty) empty.style.display = 'none';
     }
 }
 
 function setTableEmpty(hint) {
-    document.getElementById('supplier-table-body').innerHTML = '';
+    const tbody = document.getElementById('supplier-table-body');
+    if (tbody) tbody.innerHTML = '';
     const empty = document.getElementById('empty-state');
-    empty.style.display = '';
-    document.getElementById('empty-state-hint').textContent = hint;
+    if (empty) {
+        empty.style.display = '';
+        document.getElementById('empty-state-hint').textContent = hint;
+    }
 }
 
-// ─── Modal: Add ───────────────────────────────────────────────────────────────
+// ─── Modal: Add Supplier ──────────────────────────────────────────────────────
 function openAddModal() {
     document.getElementById('add-supplier-form').reset();
     document.getElementById('add-error').classList.add('hidden');
@@ -301,7 +311,7 @@ async function submitCreate(e) {
     }
 }
 
-// ─── Modal: Edit ──────────────────────────────────────────────────────────────
+// ─── Modal: Edit Supplier ─────────────────────────────────────────────────────
 function openEditModal(id) {
     const supplier = allSuppliers.find(s => s.id === id);
     if (!supplier) return;
@@ -351,7 +361,7 @@ async function submitUpdate(e) {
     }
 }
 
-// ─── Modal: Delete ────────────────────────────────────────────────────────────
+// ─── Modal: Delete Supplier ───────────────────────────────────────────────────
 function openDeleteModal(id) {
     const supplier = allSuppliers.find(s => s.id === id);
     if (!supplier) return;
@@ -446,11 +456,46 @@ function escapeAttr(str) {
     return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
 
-// ─── Keyboard: close modals on Escape ────────────────────────────────────────
+// ─── Keyboard: Escape closes any open modal ───────────────────────────────────
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-        closeAddModal();
-        closeEditModal();
-        closeDeleteModal();
+    if (e.key !== 'Escape') return;
+    ['modal-add', 'modal-edit', 'modal-delete'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
+    });
+    // Page-specific modals registered by individual pages
+    if (typeof window._escapeHandlers === 'function') window._escapeHandlers();
+});
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadUser();
+    // Dashboard-only: load supplier table
+    if (document.getElementById('supplier-table-body')) {
+        await loadSuppliers(1);
     }
 });
+
+// ─── Expose globals for inline page scripts & onclick attributes ───────────────
+window.apiFetch       = apiFetch;
+window.showToast      = showToast;
+window.escapeHtml     = escapeHtml;
+window.escapeAttr     = escapeAttr;
+window.initials       = initials;
+window.avatarColor    = avatarColor;
+window.formatDate     = formatDate;
+window.AVATAR_COLORS  = AVATAR_COLORS;
+window.handleLogout   = handleLogout;
+window.showExportToast = showExportToast;
+// Dashboard supplier CRUD (onclick bindings in dashboard.blade.php modals)
+window.openAddModal    = openAddModal;
+window.closeAddModal   = closeAddModal;
+window.submitCreate    = submitCreate;
+window.openEditModal   = openEditModal;
+window.closeEditModal  = closeEditModal;
+window.submitUpdate    = submitUpdate;
+window.openDeleteModal = openDeleteModal;
+window.closeDeleteModal = closeDeleteModal;
+window.submitDelete    = submitDelete;
+window.handleSearch    = handleSearch;
+window.goToPage        = goToPage;
