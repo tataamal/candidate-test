@@ -48,14 +48,28 @@
     <div class="animate-fade-in">
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-lg font-bold text-gray-900" style="font-family:'Merriweather',serif;">Layups</h2>
-            <!-- Add Layup: admin + supplier -->
-            <button id="add-layup-btn" onclick="openAddLayupModal()" style="display:none;"
-                class="inline-flex items-center px-3 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-[#367b59] hover:bg-[#2c6448] transition gap-1.5">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-                Add Layup
-            </button>
+
+            <div class="flex items-center gap-2 flex-wrap">
+                <button id="download-template-btn" onclick="downloadImportTemplate()" style="display:none;"
+                    class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition gap-1.5">
+                    Download Template
+                </button>
+
+                <button id="export-supplier-btn" onclick="downloadSupplierExport()" style="display:none;"
+                    class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition gap-1.5">
+                    Export Excel
+                </button>
+
+                <button id="import-supplier-btn" onclick="openImportSupplierModal()" style="display:none;"
+                    class="inline-flex items-center px-3 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-[#367b59] hover:bg-[#2c6448] transition gap-1.5">
+                    Import Excel
+                </button>
+
+                <button id="add-layup-btn" onclick="openAddLayupModal()" style="display:none;"
+                    class="inline-flex items-center px-3 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-[#367b59] hover:bg-[#2c6448] transition gap-1.5">
+                    Add Layup
+                </button>
+            </div>
         </div>
 
         <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
@@ -213,6 +227,87 @@
             </div>
         </div>
     </div>
+
+    <!-- ========== MODAL: IMPORT SUPPLIER FILE ========== -->
+    <div id="modal-import-supplier" class="fixed inset-0 z-50 hidden" aria-modal="true">
+        <div class="modal-backdrop fixed inset-0 bg-black/40" onclick="closeImportSupplierModal()"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-lg relative">
+                <div class="px-6 py-5 border-b border-gray-100">
+                    <h3 class="text-base font-bold text-gray-900" style="font-family:'Merriweather',serif;">Import Supplier Data</h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                        Upload file <span class="font-semibold">.json</span> atau <span class="font-semibold">.csv</span>.
+                    </p>
+                </div>
+
+                <form id="import-supplier-form" onsubmit="submitImportSupplierFile(event)" class="px-6 py-5 space-y-4">
+                    <div id="import-supplier-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded-r-md text-sm"></div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            File Import <span class="text-red-500">*</span>
+                        </label>
+                        <input type="file" id="import-supplier-file" accept=".xlsx,.xls"
+                            class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-medium file:bg-[#ecfdf5] file:text-[#367b59] hover:file:bg-[#dff7ea]">
+                    </div>
+
+                    <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
+                        <p class="font-semibold text-gray-800 mb-2">Template Excel columns:</p>
+                        <code class="block text-xs bg-white border rounded p-2 overflow-x-auto">layup_id,layup_name,layer_id,layer_order,thickness,width,angle</code>
+                        <p class="mt-2 text-xs text-gray-500">
+                            Kolom <span class="font-semibold">layup_id</span> dan <span class="font-semibold">layer_id</span> boleh kosong untuk create baru.
+                        </p>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button type="button" onclick="closeImportSupplierModal()"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit" id="import-supplier-submit-btn"
+                            class="px-4 py-2 text-sm font-medium text-white bg-[#367b59] rounded-lg hover:bg-[#2c6448] transition disabled:opacity-60">
+                            Import
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-import-supplier" class="fixed inset-0 z-50 hidden" aria-modal="true">
+        <div class="modal-backdrop fixed inset-0 bg-black/40" onclick="closeImportSupplierModal()"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="modal-box bg-white rounded-xl shadow-xl w-full max-w-lg relative">
+                <div class="px-6 py-5 border-b border-gray-100">
+                    <h3 class="text-base font-bold text-gray-900" style="font-family:'Merriweather',serif;">Import Supplier Data</h3>
+                    <p class="text-sm text-gray-500 mt-1">Upload file template Excel (.xlsx / .xls).</p>
+                </div>
+
+                <form id="import-supplier-form" onsubmit="submitImportSupplierFile(event)" class="px-6 py-5 space-y-4">
+                    <div id="import-supplier-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded-r-md text-sm"></div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            File Import <span class="text-red-500">*</span>
+                        </label>
+                        <input type="file" id="import-supplier-file" accept=".xlsx,.xls"
+                            class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-medium file:bg-[#ecfdf5] file:text-[#367b59] hover:file:bg-[#dff7ea]">
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button type="button" onclick="closeImportSupplierModal()"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit" id="import-supplier-submit-btn"
+                            class="px-4 py-2 text-sm font-medium text-white bg-[#367b59] rounded-lg hover:bg-[#2c6448] transition disabled:opacity-60">
+                            Import
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endpush
 
 @push('scripts')
@@ -225,7 +320,7 @@ let layupPage = 1, layupLastPage = 1, layupTotal = 0, layupPerPage = 15;
 
 // ─── Register Escape handler for page modals ──────────────────────────────────
 window._escapeHandlers = function () {
-    ['modal-edit-supplier','modal-add-layup','modal-edit-layup','modal-delete-layup'].forEach(id => {
+    ['modal-edit-supplier','modal-add-layup','modal-edit-layup','modal-delete-layup','modal-import-supplier'].forEach(id => {
         const el = document.getElementById(id);
         if (el && !el.classList.contains('hidden')) el.classList.add('hidden');
     });
@@ -273,14 +368,19 @@ function renderSupplierHeader() {
     metaEl.textContent = `ID #${String(supplier.id).padStart(4,'0')} · Added ${window.formatDate(supplier.created_at)}`;
     metaEl.classList.remove('hidden');
 
-    // Admin: show edit supplier + add layup
     if (user?.role === 'admin') {
         document.getElementById('supplier-edit-btn').classList.remove('hidden');
         document.getElementById('add-layup-btn').style.display = '';
+        document.getElementById('download-template-btn').style.display = '';
+        document.getElementById('export-supplier-btn').style.display = '';
+        document.getElementById('import-supplier-btn').style.display = '';
     }
-    // Supplier: add layup only (no edit supplier)
+
     if (user?.role === 'supplier') {
         document.getElementById('add-layup-btn').style.display = '';
+        document.getElementById('download-template-btn').style.display = '';
+        document.getElementById('export-supplier-btn').style.display = '';
+        document.getElementById('import-supplier-btn').style.display = '';
     }
 }
 
@@ -535,6 +635,281 @@ async function submitDeleteLayup() {
         window.showToast('Network error. Please try again.', 'error');
     } finally {
         btn.disabled = false; btn.textContent = 'Delete';
+    }
+}
+async function fileToImportPayload(file) {
+    const name = file.name.toLowerCase();
+
+    if (name.endsWith('.json')) {
+        const text = await file.text();
+        return parseImportJson(text);
+    }
+
+    if (name.endsWith('.csv')) {
+        const text = await file.text();
+        return parseImportCsv(text);
+    }
+
+    throw new Error('Unsupported file format. Use .json or .csv.');
+}
+
+function parseImportJson(text) {
+    let payload;
+
+    try {
+        payload = JSON.parse(text);
+    } catch {
+        throw new Error('Invalid JSON file.');
+    }
+
+    if (!payload || !Array.isArray(payload.layups)) {
+        throw new Error('Invalid JSON structure. Expected { layups: [] }.');
+    }
+
+    return payload;
+}
+
+function parseImportCsv(text) {
+    const lines = text
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .split('\n')
+        .filter(line => line.trim() !== '');
+
+    if (lines.length < 2) {
+        throw new Error('CSV file is empty.');
+    }
+
+    const headers = parseCsvLine(lines[0]).map(h => h.trim());
+    const required = ['layup_name', 'layer_order', 'thickness', 'width', 'angle'];
+
+    for (const col of required) {
+        if (!headers.includes(col)) {
+            throw new Error(`Missing required CSV column: ${col}`);
+        }
+    }
+
+    const rows = lines.slice(1).map((line, index) => {
+        const values = parseCsvLine(line);
+        const row = {};
+
+        headers.forEach((header, i) => {
+            row[header] = (values[i] ?? '').trim();
+        });
+
+        row.__row = index + 2;
+        return row;
+    });
+
+    return rowsToImportPayload(rows);
+}
+
+function parseCsvLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const next = line[i + 1];
+
+        if (char === '"') {
+            if (inQuotes && next === '"') {
+                current += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
+            result.push(current);
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+
+    result.push(current);
+    return result;
+}
+
+function rowsToImportPayload(rows) {
+    const layupMap = new Map();
+
+    rows.forEach((row) => {
+        const layupName = (row.layup_name || '').trim();
+
+        if (!layupName) {
+            throw new Error(`Row ${row.__row}: layup_name is required.`);
+        }
+
+        const layerOrder = parseInt(row.layer_order, 10);
+        const thickness = parseFloat(row.thickness);
+        const width = parseFloat(row.width);
+        const angle = parseFloat(row.angle);
+
+        if (Number.isNaN(layerOrder)) throw new Error(`Row ${row.__row}: layer_order must be an integer.`);
+        if (Number.isNaN(thickness)) throw new Error(`Row ${row.__row}: thickness must be a number.`);
+        if (Number.isNaN(width)) throw new Error(`Row ${row.__row}: width must be a number.`);
+        if (Number.isNaN(angle)) throw new Error(`Row ${row.__row}: angle must be a number.`);
+
+        const layupId = row.layup_id ? parseInt(row.layup_id, 10) : null;
+        const layerId = row.layer_id ? parseInt(row.layer_id, 10) : null;
+
+        const key = layupId ? `id:${layupId}` : `name:${layupName.toLowerCase()}`;
+
+        if (!layupMap.has(key)) {
+            layupMap.set(key, {
+                ...(layupId ? { id: layupId } : {}),
+                name: layupName,
+                layers: [],
+            });
+        }
+
+        layupMap.get(key).layers.push({
+            ...(layerId ? { id: layerId } : {}),
+            layer_order: layerOrder,
+            thickness,
+            width,
+            angle,
+        });
+    });
+
+    return {
+        layups: Array.from(layupMap.values()),
+    };
+}
+
+function openImportSupplierModal() {
+    document.getElementById('import-supplier-form').reset();
+    document.getElementById('import-supplier-error').classList.add('hidden');
+    document.getElementById('modal-import-supplier').classList.remove('hidden');
+}
+
+function closeImportSupplierModal() {
+    document.getElementById('modal-import-supplier').classList.add('hidden');
+}
+
+async function downloadSupplierExport() {
+    try {
+        const res = await fetch(`/api/v1/suppliers/${SUPPLIER_ID}/export`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+        });
+
+        if (!res.ok) {
+            const error = await res.json().catch(() => ({}));
+            window.showToast(error.message || 'Failed to export file.', 'error');
+            return;
+        }
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `supplier-${SUPPLIER_ID}-export.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        window.showToast('Export downloaded successfully.', 'success');
+    } catch (err) {
+        window.showToast('Network error while exporting.', 'error');
+    }
+}
+
+async function downloadImportTemplate() {
+    try {
+        const res = await fetch(`/api/v1/suppliers/${SUPPLIER_ID}/import-template`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+        });
+
+        if (!res.ok) {
+            const error = await res.json().catch(() => ({}));
+            window.showToast(error.message || 'Failed to download template.', 'error');
+            return;
+        }
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `supplier-${SUPPLIER_ID}-import-template.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        window.showToast('Template downloaded successfully.', 'success');
+    } catch (err) {
+        window.showToast('Network error while downloading template.', 'error');
+    }
+}
+
+async function submitImportSupplierFile(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('import-supplier-submit-btn');
+    const errorDiv = document.getElementById('import-supplier-error');
+    const fileInput = document.getElementById('import-supplier-file');
+    const file = fileInput.files?.[0];
+
+    errorDiv.classList.add('hidden');
+
+    if (!file) {
+        errorDiv.textContent = 'Please choose an Excel file first.';
+        errorDiv.classList.remove('hidden');
+        return;
+    }
+
+    const allowedExtensions = ['.xlsx', '.xls'];
+    const lowerName = file.name.toLowerCase();
+    const isAllowed = allowedExtensions.some(ext => lowerName.endsWith(ext));
+
+    if (!isAllowed) {
+        errorDiv.textContent = 'File must be .xlsx or .xls.';
+        errorDiv.classList.remove('hidden');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    btn.disabled = true;
+    btn.textContent = 'Importing...';
+
+    try {
+        const res = await fetch(`/api/v1/suppliers/${SUPPLIER_ID}/import`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+            },
+            body: formData,
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+            closeImportSupplierModal();
+            window.showToast('Supplier data imported successfully.', 'success');
+            await loadLayups(1);
+        } else {
+            const msg = data.errors
+                ? Object.values(data.errors).flat().join(' ')
+                : (data.message || 'Import failed.');
+            errorDiv.textContent = msg;
+            errorDiv.classList.remove('hidden');
+        }
+    } catch (err) {
+        errorDiv.textContent = 'Network error. Please try again.';
+        errorDiv.classList.remove('hidden');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Import';
     }
 }
 </script>

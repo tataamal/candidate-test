@@ -10,11 +10,12 @@ class SupplierPolicy
     /**
      * Admin bypass semua policy
      */
-    public function before(User $user, string $ability): bool|null
+    public function before(User $user, string $ability): ?bool
     {
         if ($user->isAdmin()) {
             return true; // admin selalu boleh
         }
+
         return null; // lanjut cek policy di bawah
     }
 
@@ -57,5 +58,15 @@ class SupplierPolicy
     public function delete(User $user, Supplier $supplier): bool
     {
         return false;
+    }
+
+    public function export(User $user, Supplier $supplier): bool
+    {
+        return $user->isSupplier() && $supplier->user_id === $user->id;
+    }
+
+    public function import(User $user, Supplier $supplier): bool
+    {
+        return $user->isSupplier() && $supplier->user_id === $user->id;
     }
 }

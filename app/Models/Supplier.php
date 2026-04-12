@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Supplier extends Model
 {
@@ -13,6 +13,11 @@ class Supplier extends Model
     protected $fillable = ['name', 'user_id'];
 
     public function layup(): HasMany
+    {
+        return $this->layups();
+    }
+
+    public function layups(): HasMany
     {
         return $this->hasMany(Layup::class, 'supplier_id');
     }
